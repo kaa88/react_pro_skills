@@ -32,10 +32,5 @@ jobs:
         key: ${{secrets.SSH_PRIVATE_KEY}}
         known_hosts: ${{secrets.KNOWN_HOSTS}}
 
-    # - name: Add known_hosts
-    #   run: ssh-keyscan -H alwaysdata.net >> $HOME/.ssh/known_hosts
-
     - name: Deploy
       run: rsync -rz --mkpath build/ kaa88@ssh-kaa88.alwaysdata.net:www/react_pro_skills
-      # env:
-      #   SSH_PRIVATE_KEY: ${{secrets.SSH_PRIVATE_KEY}}
