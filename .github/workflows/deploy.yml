@@ -25,6 +25,8 @@ jobs:
       run: npm run build --if-present
 
     - name: Deploy
-      run: rsync -rz --mkpath build/ kaa88@ssh-kaa88.alwaysdata.net:www/react_pro_skills -i $SSH_KEY_PATH
+      run: |
+        ssh-copy-id -i $SSH_KEY_PATH kaa88@ssh-kaa88.alwaysdata.net
+        rsync -rz --mkpath build/ kaa88@ssh-kaa88.alwaysdata.net:www/react_pro_skills
       env:
         SSH_PRIVATE_KEY: ${{secrets.SSH_PRIVATE_KEY}}
