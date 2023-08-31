@@ -26,7 +26,7 @@ jobs:
 
     - name: Deploy
       run: |
-        ssh-copy-id -i $SSH_KEY_PATH kaa88@ssh-kaa88.alwaysdata.net
+        ssh-copy-id -i $SSH_PRIVATE_KEY kaa88@ssh-kaa88.alwaysdata.net
         rsync -rz --mkpath build/ kaa88@ssh-kaa88.alwaysdata.net:www/react_pro_skills
       env:
         SSH_PRIVATE_KEY: ${{secrets.SSH_PRIVATE_KEY}}
