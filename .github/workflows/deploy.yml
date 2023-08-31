@@ -31,7 +31,7 @@ jobs:
         known_hosts: '_'
 
     - name: Add known_hosts
-      run: ssh-keyscan -H kaa88.alwaysdata.net >> $HOME/.ssh/known_hosts2
+      run: ssh-keyscan -H kaa88.alwaysdata.net >> $HOME/.ssh/known_hosts
 
     - name: Deploy
       run: rsync -rz --mkpath build/ kaa88@ssh-kaa88.alwaysdata.net:www/react_pro_skills
