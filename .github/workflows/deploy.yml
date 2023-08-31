@@ -25,11 +25,11 @@ jobs:
       run: npm run build --if-present
 
     - name: Set up SSH key
-      run: |
-        mkdir -p $HOME/.ssh
-        echo "${{ secrets.SSH_PRIVATE_KEY }}" > $HOME/.ssh/authorized_keys
-        chmod 600 $HOME/.ssh/authorized_keys
-        ssh-keyscan -t rsa github.com >> $HOME/.ssh/known_hosts
+      uses: shimataro/ssh-key-action@v2
+      with:
+        key: ${{secrets.SSH_PRIVATE_KEY}}
+        known_hosts: '_'
+      run: ssh-keyscan -H kaa88.alwaysdata.net >> ~/.ssh/known_hosts
 
     - name: Deploy
       run: rsync -rz --mkpath build/ kaa88@ssh-kaa88.alwaysdata.net:www/react_pro_skills
