@@ -23,6 +23,8 @@ jobs:
 
     - name: Build React App
       run: npm run build --if-present
+      env:
+        PUBLIC_URL: https://kaa88.alwaysdata.net/react_pro_skills
 
     - name: Set up SSH key
       uses: shimataro/ssh-key-action@v2
@@ -34,6 +36,8 @@ jobs:
     #   run: ssh-keyscan -H alwaysdata.net >> $HOME/.ssh/known_hosts
 
     - name: Deploy
-      run: rsync -rz --mkpath build/ kaa88@ssh-kaa88.alwaysdata.net:www/react_pro_skills
+      run: |
+        rsync -rz --mkpath build/ kaa88@ssh-kaa88.alwaysdata.net:www/react_pro_skills
+        npm run restart
       # env:
       #   SSH_PRIVATE_KEY: ${{secrets.SSH_PRIVATE_KEY}}
