@@ -1,9 +1,9 @@
 import React from 'react';
 import './App.css';
-import * as CardComponent from './components/Card/Card';
+// import * as CardComponent from './components/Card/Card';
 
 // console.log(Card.Width);
-const Card = CardComponent.default
+// const Card = CardComponent.default
 
 
 function App() {
@@ -11,8 +11,8 @@ function App() {
 
 	return (
 		<div className="App">
-			<Card width={CardComponent.Width.one} />
-			<Card className={name} name='vasya'></Card>
+			{/* <Card width={CardComponent.Width.one} />
+			<Card className={name} name='vasya'></Card> */}
 		</div>
 	)
 }
