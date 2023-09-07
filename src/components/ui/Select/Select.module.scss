@@ -1,0 +1,131 @@
+@import "../../../scss/variables.scss";
+
+.default, .siteOptions, .reservation {
+	position: relative;
+	display: flex;
+	align-items: center;
+	height: rem(27);
+	transition: all $timer-select;
+	font-size: rem(16);
+}
+.reservation {
+	width: rem(150);
+	height: rem(30);
+}
+.header {
+	position: relative;
+	z-index: 3;
+	height: 100%;
+	padding: 0 rem(4);
+	display: flex;
+	align-items: center;
+	user-select: none;
+	border-radius: rem(8);
+	cursor: pointer;
+	transition: color $timer-select, fill $timer-select;
+	.reservation & {
+		justify-content: center;
+		width: 100%;
+		border-radius: rem(18);
+		background-color: var(--color02);
+		font-size: rem(20);
+		@media (max-width: $media-ml+px) {
+			background-color: transparent;
+		}
+	}
+	&.active, .reservation & {
+		color: var(--color01);
+		fill: var(--color01);
+	}
+	.reservation & {
+		@media (max-width: $media-ml+px) {
+			color: var(--color02);
+			fill: var(--color02);
+		}
+	}
+	.reservation &.active {
+		@media (max-width: $media-ml+px) {
+			color: var(--color01);
+			fill: var(--color01);
+		}
+	}
+}
+.headerText {
+	flex: 1 1 auto;
+	white-space: nowrap;
+	overflow: hidden;
+	.reservation & {
+		flex: 0 0 auto;
+	}
+}
+.headerExpandIcon {
+	margin-left: rem(5);
+	flex: 0 0 auto;
+	width: rem(8);
+	height: rem(8);
+	display: flex;
+	align-items: center;
+	transform: rotate(90deg);
+	.reservation & {
+		width: rem(11);
+		height: rem(11);
+	}
+}
+.headerExpandIcon svg {
+	width: rem(8);
+	height: rem(8);
+	.reservation & {
+		margin-bottom: rem(5);
+		margin-left: rem(4);
+		width: rem(11);
+		height: rem(11);
+	}
+}
+.listWrapper {
+	position: absolute;
+	top: 0;
+	right: 0;
+	width: 100%;
+	z-index: 2;
+	height: rem(27);
+	overflow: hidden;
+	transition: all $timer-select;
+	visibility: hidden;
+	background-color: var(--color02);
+	border-radius: rem(8);
+	color: var(--color01);
+	opacity: 0;
+	.reservation & {
+		border-radius: rem(18);
+	}
+	&.active {
+		visibility: visible;
+		opacity: 1;
+	}
+}
+.list {
+	padding-top: rem(28);
+	.reservation & {
+		padding-top: rem(30);
+		padding-bottom: rem(10);
+	}
+}
+.option {
+	display: flex;
+	align-items: center;
+	height: rem(27);
+	padding: 0 rem(4);
+	white-space: nowrap;
+	overflow: hidden;
+	transition: all $timer-hover;
+	user-select: none;
+	opacity: 0.5;
+	cursor: pointer;
+	.reservation & {
+		height: rem(28);
+		margin-left: rem(10);
+	}
+	&.selected, &:hover {
+		opacity: 1;
+	}
+}

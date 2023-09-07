@@ -1,0 +1,34 @@
+@import "../../../scss/variables.scss";
+
+.default, .negative {
+	font-size: rem(16);
+	span {
+		line-height: 1.8em;
+		font-size: 1.5em;
+		font-weight: 500;
+		color: var(--color02);
+		letter-spacing: em(2);
+	}
+}
+.negative span {
+	color: var(--color01);
+}
+.link {
+	// display: inline-block;
+	display: inline-flex;
+	height: 2em;
+	overflow: hidden;
+	white-space: nowrap;
+}
+.icon {
+	display: inline-block;
+	// margin-left: em(2);
+	margin-right: em(2);
+	width: 1.5em;
+	height: 1.5em;
+	position: relative;
+	// bottom: 0.2em;
+	bottom: 0;
+	transform: rotate(24deg);
+	fill: var(--color03);
+}

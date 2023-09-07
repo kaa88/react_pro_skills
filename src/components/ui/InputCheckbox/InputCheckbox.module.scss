@@ -1,0 +1,48 @@
+@import "../../../scss/variables.scss";
+
+.wrapper, .dark, .light {
+	display: inline-flex;
+}
+.label {
+	display: inline-flex;
+	input {
+		display: none;
+	}
+	input:checked ~ .box {
+		background-color: var(--color01);
+	}
+	input:checked ~ .box .boxIcon {
+		opacity: 1;
+	}
+}
+.box {
+	flex-shrink: 0;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: rem(16);
+	height: rem(16);
+	background-color: transparent;
+	border: rem(1) solid var(--color02);
+	border-radius: rem(2);
+	cursor: pointer;
+	transition: background-color $timer-hover;
+	.light & {
+		border-color: var(--color01);
+	}
+}
+.boxIcon {
+	width: rem(8);
+	height: rem(8);
+	fill: var(--color02);
+	opacity: 0;
+	transition: opacity $timer-hover;
+}
+.text {
+	margin-left: rem(8);
+	color: var(--color02);
+	user-select: none;
+	.light & {
+		color: var(--color01);
+	}
+}
