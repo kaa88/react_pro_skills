@@ -1,7 +1,15 @@
 import { useState } from 'react';
+import { CustomFCProps } from '../../../types/CustomFCProps';
 import classes from './InputCheckbox.module.scss';
 import Icon from '../Icon/Icon';
 
+interface InputCheckboxProps extends CustomFCProps<HTMLInputElement> {
+	modif?: string
+	name?: string
+	onChange?: (name: string, newState: boolean) => any[]
+	checked?: boolean
+	clickableText?: boolean
+}
 
 function InputCheckbox({
 	modif = 'dark',
@@ -12,7 +20,7 @@ function InputCheckbox({
 	clickableText = true,
 	children,
 	...props
-}) {
+}: InputCheckboxProps) {
 
 	let [state, setState] = useState(checked)
 

@@ -1,17 +1,21 @@
-import React from 'react';
+import { CustomFCProps } from '../../../types/CustomFCProps';
 import classes from './Icon.module.scss';
 import iconSprite from './sprite.svg';
 
+interface IconProps extends CustomFCProps<SVGElement> {
+	name: string
+	size?: string // eg '20px'
+}
 
-function Icon({
-	name = '',
+const Icon = function({
+	className = '',
+	name,
 	size,
 	style = {},
-	className = '',
 	...props
-}) {
-	const path = `${iconSprite}#${name}`
+}: IconProps) {
 
+	const path = `${iconSprite}#${name}`
 	if (size) style.width = style.height = size;
 	return (
 		<svg

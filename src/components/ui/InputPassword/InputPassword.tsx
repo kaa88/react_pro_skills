@@ -1,3 +1,4 @@
+import React from "react"
 import { useEffect, useState } from 'react';
 import classes from './InputPassword.module.scss';
 import Icon from '../Icon/Icon';
@@ -19,7 +20,7 @@ function InputPassword({
 		[TEXT]: 'icon-eye'
 	}
 
-	function handleChange(e) {
+	function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
 		setValue(e.target.value)
 	}
 
@@ -48,7 +49,7 @@ function InputPassword({
 				{...props}
 			/>
 			<div className={classes.iconBox}>
-				<Icon className={classes.icon} name={icons[type]} onClick={changeVisibility} />
+				<Icon className={classes.icon} name={icons[type as keyof typeof icons]} onClick={changeVisibility} />
 			</div>
 		</div>
 	)

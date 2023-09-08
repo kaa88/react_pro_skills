@@ -8,7 +8,7 @@ function Image({className = '', src = '', ...props}) {
 	let img = src, img2x;
 	if (Array.isArray(src)) [img, img2x] = src
 
-	const imageRef = useRef()
+	const imageRef = useRef<any>()
 
 	function hideImageOnError() {
 		imageRef.current.style.visibility = 'hidden'

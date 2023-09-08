@@ -1,7 +1,7 @@
 
 function PageTitle({value}) {
 
-	const siteName = 'RENT@CAR'
+	const siteName = 'ProSkills'
 	const divider = ' | '
 
 	let title = siteName // TODO: translate

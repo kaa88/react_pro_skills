@@ -1,12 +1,17 @@
+import { CustomFCProps } from '../../../types/CustomFCProps';
 import classes from './Button.module.scss';
 
+interface ButtonProps extends CustomFCProps<HTMLButtonElement> {
+	modif?: string
+	type?: 'button' | 'submit' | 'reset' | undefined
+}
 
-function Button({
-	modif = 'default',
+const Button = function({
 	className = '',
-	children = 'Button',
+	modif = 'default',
+	children = 'button',
 	...props
-}) {
+}: ButtonProps) {
 
 	return (
 		<button className={`${className} ${classes[modif]}`} {...props}>
