@@ -1,24 +1,28 @@
-import { memo, useEffect, useRef, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import type { ComponentPropsWithRef } from 'react';
+import React, { memo, useEffect, useRef, useState } from 'react';
 import { setActiveModal } from '../../../store/slices/modalSlice'
 import {getCssVariable} from '../../../utilities/utilities';
 import { lockScroll, unlockScroll } from '../../../utilities/scrollLock';
 import { transitionIsLocked } from '../../../utilities/transitionLock';
-import TranslateHandler from '../../TranslateHandler';
+// import TranslateHandler from '../../TranslateHandler';
 import classes from './Modal.module.scss';
 import Icon from '../Icon/Icon';
 import ModalStaticContent, { staticNames } from './ModalStaticContent';
 import { scriptManager } from '../../../utilities/scriptManager';
+import { useAppDispatch, useAppSelector } from '../../../hooks/typedReduxHooks';
 
 // TODO: multi-window modal
 
 const timeout = getCssVariable('timer-modal') * 1000
 
+interface ModalProps extends ComponentPropsWithRef<'div'> {
+	// onClick?: (event: React.MouseEvent) => void
+}
 
-const Modal = memo(function Modal({ className = '' }) {
+const Modal = memo(function Modal({ className = '' }: ModalProps) {
 
-	const dispatch = useDispatch()
-	const modalStore = useSelector(state => state.modal)
+	const dispatch = useAppDispatch()
+	const modalStore = useAppSelector(state => state.modal)
 
 	const defaultModal = {
 		isActive: false,
@@ -30,10 +34,10 @@ const Modal = memo(function Modal({ className = '' }) {
 
 	useEffect(() => {
 		if (modalStore.active) openModal()
-		else closeModal(true)
+		else closeModal(null, true)
 	}, [modalStore]) // eslint-disable-line react-hooks/exhaustive-deps
 
-	const contentRef = useRef()
+	const contentRef = useRef<HTMLDivElement>(null)
 
 	function openModal() {
 		lockScroll()
@@ -42,9 +46,9 @@ const Modal = memo(function Modal({ className = '' }) {
 			name: modalStore.active,
 			content: modalStore.content || getStaticContent()
 		})
-		contentRef.current.scrollTo({top: 0})
+		if (contentRef.current) contentRef.current.scrollTo({top: 0})
 	}
-	function closeModal(linkEvent) {
+	function closeModal(e?: React.MouseEvent | null, linkEvent?: boolean) {
 		if (!linkEvent && transitionIsLocked(timeout)) return;
 		unlockScroll(timeout)
 		dispatch(setActiveModal(''))
@@ -61,12 +65,12 @@ const Modal = memo(function Modal({ className = '' }) {
 	}
 
 	useEffect(() => {
-		scriptManager.registerFunctions('modal', {close: closeModal.bind(null, true)})
+		scriptManager.registerFunctions('modal', {close: closeModal.bind(null, null, true)})
 	}, []) // eslint-disable-line react-hooks/exhaustive-deps
 	
 	return (
-		<TranslateHandler>
-			<div className={`${className} ${classes.default} ${modal.isActive ? classes.active : ''}`} name={modal.name}>
+		// <TranslateHandler>
+			<div className={`${className} ${classes.default} ${modal.isActive ? classes.active : ''}`} data-name={modal.name}>
 				<div className={classes.closeArea} onClick={closeModal}></div>
 				<div className={classes.wrapper}>
 					<div className={classes.closeButton} onClick={closeModal}>
@@ -77,7 +81,7 @@ const Modal = memo(function Modal({ className = '' }) {
 					</div>
 				</div>
 			</div>
-		</TranslateHandler>
+		// </TranslateHandler>
 	)
 })
 

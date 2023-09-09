@@ -1,22 +1,27 @@
+import type { ComponentPropsWithRef } from 'react';
 import { memo, useEffect, useRef } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import classes from './Popup.module.scss';
-import TranslateHandler from '../../TranslateHandler';
+// import TranslateHandler from '../../TranslateHandler';
 import Icon from '../Icon/Icon';
 import { setActivePopup } from '../../../store/slices/popupSlice';
+import { useAppDispatch, useAppSelector } from '../../../hooks/typedReduxHooks';
 
+interface PopupProps extends ComponentPropsWithRef<'div'> {
+	modif?: 'default' | 'noCloseButton'
+	name?: string
+}
 
-const Popup = memo(function Popup({modif = 'default', className = '', name = '', children, ...props}) {
+const Popup = memo(function Popup({modif = 'default', className = '', name = '', children, ...props}: PopupProps) {
 
-	const popup = useRef()
-	const dispatch = useDispatch()
-	const activePopup = useSelector(state => state.popup.active)
+	const popup = useRef<HTMLDivElement>(null)
+	const dispatch = useAppDispatch()
+	const activePopup = useAppSelector(state => state.popup.active)
 	let activeClass = activePopup === name ? classes.active : ''
 
 	useEffect(() => {
 		if (activePopup === name) {
 			setTimeout(() => {
-				popup.current.scrollIntoView({block: 'nearest', behavior: 'smooth'})
+				if (popup.current) popup.current.scrollIntoView({block: 'nearest', behavior: 'smooth'})
 			}, 50)
 		}
 	})
@@ -25,15 +30,15 @@ const Popup = memo(function Popup({modif = 'default', className = '', name = '',
 		dispatch(setActivePopup(''))
 	}
 
-	const rejectWindowClosePopupEvent = function(e) {
+	const rejectWindowClosePopupEvent = function(e: React.MouseEvent) {
 		e.stopPropagation()
 	}
 
 	return (
-		<TranslateHandler>
+		// <TranslateHandler>
 			<div
 				className={`${className} ${classes[modif]} ${activeClass}`}
-				name={name}
+				data-name={name}
 				ref={popup}
 				onClick={rejectWindowClosePopupEvent}
 				{...props}
@@ -43,7 +48,7 @@ const Popup = memo(function Popup({modif = 'default', className = '', name = '',
 				</div>
 				{children}
 			</div>
-		</TranslateHandler>
+		// </TranslateHandler>
 	)
 })
 

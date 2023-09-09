@@ -1,8 +1,8 @@
-import { CustomFCProps } from '../../../types/CustomFCProps';
+import type { ComponentPropsWithoutRef } from 'react';
 import classes from './Container.module.scss';
 
-interface ContainerProps extends CustomFCProps<HTMLElement> {
-	modif?: string
+interface ContainerProps extends ComponentPropsWithoutRef<'div'> {
+	modif?: 'default' | 'flex'
 }
 
 function Container({
@@ -11,6 +11,7 @@ function Container({
 	children,
 	...props
 }: ContainerProps) {
+	
 	return (
 		<div className={`${className} ${classes[modif]}`} {...props}>
 			{children}

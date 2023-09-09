@@ -1,10 +1,11 @@
-import { CustomFCProps } from '../../../types/CustomFCProps';
+import type { ComponentPropsWithoutRef } from 'react';
 import classes from './Icon.module.scss';
 import iconSprite from './sprite.svg';
 
-interface IconProps extends CustomFCProps<SVGElement> {
+interface IconProps extends ComponentPropsWithoutRef<'svg'> {
 	name: string
 	size?: string // eg '20px'
+	children?: undefined
 }
 
 const Icon = function({

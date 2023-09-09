@@ -1,7 +1,12 @@
-import React from "react"
+import type { ComponentPropsWithoutRef } from 'react';
 import { useEffect, useState } from 'react';
 import classes from './InputPassword.module.scss';
 import Icon from '../Icon/Icon';
+
+interface InputPasswordProps extends ComponentPropsWithoutRef<'input'> {
+	modif?: 'default' | 'textCenter'
+	children?: undefined
+}
 
 const PASSWORD = 'password'
 const TEXT = 'text'
@@ -10,12 +15,12 @@ function InputPassword({
 	modif = 'default',
 	className = '',
 	...props
-}) {
+}: InputPasswordProps) {
 
 	let [value, setValue] = useState('')
 	let [type, setType] = useState(PASSWORD)
 
-	const icons = {
+	const icons: {[index: string]: string} = {
 		[PASSWORD]: 'icon-eye-close',
 		[TEXT]: 'icon-eye'
 	}
@@ -49,7 +54,7 @@ function InputPassword({
 				{...props}
 			/>
 			<div className={classes.iconBox}>
-				<Icon className={classes.icon} name={icons[type as keyof typeof icons]} onClick={changeVisibility} />
+				<Icon className={classes.icon} name={icons[type]} onClick={changeVisibility} />
 			</div>
 		</div>
 	)

@@ -1,9 +1,8 @@
-import { CustomFCProps } from '../../../types/CustomFCProps';
+import type { ComponentPropsWithoutRef } from 'react';
 import classes from './Button.module.scss';
 
-interface ButtonProps extends CustomFCProps<HTMLButtonElement> {
-	modif?: string
-	type?: 'button' | 'submit' | 'reset' | undefined
+interface ButtonProps extends ComponentPropsWithoutRef<'button'> {
+	modif?: 'default' | 'negative'
 }
 
 const Button = function({

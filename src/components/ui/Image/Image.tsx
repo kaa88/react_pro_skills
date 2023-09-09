@@ -1,21 +1,24 @@
-import React, { useRef } from 'react';
+import type { ComponentPropsWithRef } from 'react';
+import { useRef } from 'react';
 import classes from './Image.module.scss';
 
 // TODO: add picture source for media queries
 
-function Image({className = '', src = '', ...props}) {
+interface ImageProps extends ComponentPropsWithRef<'img'> {}
+
+function Image({className = '', src = '', ...props}: ImageProps) {
 
 	let img = src, img2x;
 	if (Array.isArray(src)) [img, img2x] = src
 
-	const imageRef = useRef<any>()
+	const imageRef = useRef<HTMLImageElement>(null)
 
 	function hideImageOnError() {
-		imageRef.current.style.visibility = 'hidden'
+		if (imageRef.current) imageRef.current.style.visibility = 'hidden'
 	}
 
 	function refresh() {
-		imageRef.current.style = ''
+		if (imageRef.current) imageRef.current.style.visibility = ''
 	}
 	
 	return (

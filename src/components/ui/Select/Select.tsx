@@ -1,11 +1,27 @@
+import type { ComponentPropsWithRef } from 'react';
 import { useCallback, useEffect, useMemo, useState, memo, useRef } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { setActiveSelect } from '../../../store/slices/selectSlice';
-import { translate } from '../../TranslateHandler';
+// import { translate } from '../../TranslateHandler';
 import {getRandomId} from '../../../utilities/utilities';
 import classes from './Select.module.scss';
 import Icon from '../Icon/Icon';
+import { useAppDispatch, useAppSelector } from '../../../hooks/typedReduxHooks';
 
+interface IData {
+	selected: string
+	list: string[]
+}
+
+interface SelectProps extends ComponentPropsWithRef<'div'> {
+	modif?: 'default' | 'siteOptions' | 'reservation'
+	applyTranslator?: boolean
+	data: IData
+}
+
+const defaultData: IData = {
+	selected: '',
+	list: []
+}
 
 const Select = memo(function Select({
 	modif = 'default',
@@ -15,43 +31,42 @@ const Select = memo(function Select({
 	applyTranslator = false,
 	children,
 	...props
-}) {
-	const defaultData = {
-		selected: '',
-		list: []
-	}
+}: SelectProps) {
+
 	if (typeof data !== 'object' || Array.isArray(data)) data = defaultData
 
 	const [currentSelect] = useState(getRandomId(5))
-	const dispatch = useDispatch()
-	const activeSelect = useSelector(state => state.select.active)
+	const dispatch = useAppDispatch()
+	const activeSelect = useAppSelector(state => state.select.active)
 	const activeClass = (activeSelect === currentSelect && data.list.length) ? classes.active : ''
 
-	const toggleList = function(e) {
+	const toggleList = function(e: React.MouseEvent) {
 		e.stopPropagation()
 		let value = activeClass ? '' : currentSelect
 		dispatch(setActiveSelect(value))
 	}
 
-	const listWrapperRef = useRef()
+	const listWrapperRef = useRef<HTMLDivElement>(null)
 	useEffect(() => {
 		const listWrapperEl = listWrapperRef.current
-		const listEl = listWrapperEl.children[0]
-		listWrapperEl.style.height = activeClass ? listEl.offsetHeight + 'px' : ''
+		if (!listWrapperEl) return;
+		const listEl = listWrapperEl.children[0] as HTMLElement
+		listWrapperEl.style.height = activeClass ? (listEl.offsetHeight + 'px') : ''
 	}, [activeClass])
 
-	const selectItem = useCallback((e) => {
-		onSelect(e.target.dataset.value)
+	const selectItem = useCallback((e: React.MouseEvent) => {
+		let target = e.target as EventTarget & {dataset?: any}
+		onSelect(target.dataset.value)
 	}, [onSelect])
 
-	const language = useSelector(state => state.language) // alternative usage of TranslateHandler
+	const language = useAppSelector(state => state.language) // alternative usage of TranslateHandler
 
-	let customOptionList = useMemo(() => data.list.map((item, index) => {
+	let customOptionList = useMemo(() => data.list.map((item: any, index: number) => {
 		let className = classes.option
 		if (item === data.selected) className += ' ' + classes.selected
 		return (
 			<li className={className} data-value={item} onClick={selectItem} key={index}>
-				{applyTranslator ? translate(`?_${item}`, language) : item}
+				{/* {applyTranslator ? translate(`?_${item}`, language) :  */}item{/* } */}
 			</li>
 		)
 	}
@@ -60,7 +75,7 @@ const Select = memo(function Select({
 	return (
 		<div className={`${className} ${classes[modif]}`} {...props}>
 			<div className={`${classes.header} ${activeClass}`} onClick={toggleList}>
-				<span className={classes.headerText}>{applyTranslator ? translate(`?_${data.selected}`, language) : data.selected}</span>
+				<span className={classes.headerText}>{/* {applyTranslator ? translate(`?_${data.selected}`, language) :  */}data.selected{/* } */}</span>
 				<span className={classes.headerExpandIcon}>
 					<Icon name='icon-arrow-short' />
 				</span>
