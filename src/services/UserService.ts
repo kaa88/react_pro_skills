@@ -1,12 +1,13 @@
 import api from "../api/api"
 import { handleError } from "../services/ErrorService"
-import { changeCurrency } from "../store/slices/currencySlice"
-import { changeLanguage } from "../store/slices/languageSlice"
-import { changeUserData } from "../store/slices/userSlice"
+// import { changeCurrency } from "../store/slices/currencySlice"
+// import { changeLanguage } from "../store/slices/languageSlice"
+// import { changeUserData } from "../store/slices/userSlice"
 import { _wait_ } from "../utilities/utilities"
 
 
 const UserService = {
+	dispatch: null as null | Function,
 	getUserDataOnInit: init,
 
 	async updateUserData() {
@@ -15,7 +16,7 @@ const UserService = {
 			.catch(error => handleError(error))
 	},
 
-	async login(username, password) {
+	async login(username: string, password: string) {
 		return api.post('/user/login', {email: username, password})
 			.then(response => {
 				updateStorage(response.data)
@@ -33,7 +34,7 @@ const UserService = {
 			.catch(error => handleError(error))
 	},
 
-	async register(username, password, currency = null, language = null, cookieAccepted = false) {
+	async register(username: string, password: string, currency = null, language = null, cookieAccepted = false) {
 		return api.post('/user/add', {email: username, password, currency, language, cookieAccepted})
 			.then(response => {
 				updateStorage(response.data)
@@ -42,7 +43,7 @@ const UserService = {
 			.catch(error => handleError(error))
 	},
 
-	async registerGuest(username, password, currency = null, language = null, cookieAccepted = false, name) {
+	async registerGuest(username: string, password: string, currency = null, language = null, cookieAccepted = false, name: string) {
 		return api.post('/user/addguest', {email: username, password, currency, language, cookieAccepted, name})
 			.then(response => {
 				updateStorage(response.data)
@@ -51,7 +52,7 @@ const UserService = {
 			.catch(error => handleError(error))
 	},
 
-	async edit(key, value) {
+	async edit(key: string, value: string) {
 		return api.put('/user/edit', { [key]: value })
 			.then(response => {
 				return {ok: true}
@@ -59,7 +60,7 @@ const UserService = {
 			.catch(error => handleError(error))
 	},
 
-	async changePassword(currentPassword, newPassword) {
+	async changePassword(currentPassword: string, newPassword: string) {
 		return api.put('/user/changepassword', {
 				currentPassword,
 				newPassword
@@ -68,13 +69,13 @@ const UserService = {
 			.catch(error => handleError(error))
 	},
 
-	async restorePassword(email) {
+	async restorePassword(email: string) {
 		return api.post('/user/restorepassword', {email})
 			.then(response => ({ok: true}))
 			.catch(error => handleError(error))
 	},
 
-	async changeImage(file) {
+	async changeImage(file: string) {
 		let connection = await api.get('/connect') // I use test connection to avoid image double uploading if token has expired
 		if (connection.data?.ok) {
 			let formData = new FormData()
@@ -87,7 +88,7 @@ const UserService = {
 		}
 	},
 
-	async sendFeedback(username, rating, message) {
+	async sendFeedback(username: string, rating: number, message: string) {
 		// Later...
 		console.log('Feedback content:')
 		console.log('username:', username)
@@ -111,7 +112,7 @@ async function init() {
 	else return null
 }
 
-function updateStorage(data) {
+function updateStorage(data: any) {
 	let token = data.accessToken
 	if (token) localStorage.setItem(TOKEN, token)
 
@@ -119,9 +120,9 @@ function updateStorage(data) {
 
 	const dispatch = UserService.dispatch
 	if (dispatch) {
-		dispatch(changeUserData(userData))
-		dispatch(changeLanguage(language))
-		dispatch(changeCurrency(currency))
+		// dispatch(changeUserData(userData))
+		// dispatch(changeLanguage(language))
+		// dispatch(changeCurrency(currency))
 	}
 	else {
 		let intervalId = setInterval(() => {
@@ -137,5 +138,5 @@ function updateStorage(data) {
 function clearStorage() {
 	localStorage.removeItem(TOKEN)
 	const dispatch = UserService.dispatch
-	if (dispatch) dispatch(changeUserData(null))
+	// if (dispatch) dispatch(changeUserData(null))
 }

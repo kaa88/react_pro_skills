@@ -1,5 +1,5 @@
 
-function PageTitle({value}) {
+function PageTitle({value}: {value?: string}) {
 
 	const siteName = 'ProSkills'
 	const divider = ' | '

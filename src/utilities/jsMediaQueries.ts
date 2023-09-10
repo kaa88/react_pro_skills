@@ -12,20 +12,31 @@
 	- testMode - set to 'true' to console.log the breakpoint state when it executes (default = false)
 */
 
+interface Params {
+	testMode?: boolean
+}
+type Key = number
+
 export const jsMediaQueries = {
 	selfName: 'jsMediaQueries',
-	breakpoints: {0: []},
+	breakpoints: {0: []} as {[key: number]: Function[]},
 	initiated: false,
-	init(params) {
+	params: {} as Params,
+	keys: [] as Key[],
+	keysReversed: [] as Key[],
+	state: 0 as Key,
+	prev_state: 0 as Key,
+
+	init(params: Params) {
 		this.params = params || {}
 		this.keys = this.keysReversed = []
-		this.check(false, true)
+		this.check(null, true)
 		window.addEventListener('resize', this.check.bind(this))
 		this.initiated = true
 	},
 
 	generateKeys() {
-		let keys = Object.keys(this.breakpoints).map((key) => {
+		let keys = Object.keys(this.breakpoints).map((key: Key | string) => {
 			key = Number(key)
 			if (isNaN(key)) key = 0
 			return key
@@ -37,7 +48,7 @@ export const jsMediaQueries = {
 		this.keysReversed = keysReversed
 	},
 
-	registerActions(breakpoint, callbacks) {
+	registerActions(breakpoint: number, callbacks: Function[]) {
 		if (!breakpoint || !Array.isArray(callbacks))
 			return console.error(`${this.selfName} could not register a new actions because of missing or wrong arguments`)
 	
@@ -48,7 +59,7 @@ export const jsMediaQueries = {
 		this.generateKeys()
 	},
 
-	deleteActions(breakpoint, callbacks) {
+	deleteActions(breakpoint: number, callbacks: Function[]) {
 		if (!breakpoint || !Array.isArray(callbacks))
 			return console.error(`${this.selfName} could not delete actions because of missing arguments`)
 
@@ -59,7 +70,7 @@ export const jsMediaQueries = {
 		this.generateKeys()
 	},
 
-	check(e, init = false) {
+	check(e: Event | null, init = false) {
 		for (let i = 0; i < this.keys.length; i++) {
 			if (window.innerWidth > this.keys[i]) this.state = this.keys[i]
 			else break
@@ -78,16 +89,16 @@ export const jsMediaQueries = {
 			}
 			this.prev_state = this.state
 		}
-		function run(key, that) {
-			that.breakpoints[key].forEach((item) => {
-				try { item() } catch(err) { console.log(err.message) }
+		function run(key: Key, that: any) {
+			that.breakpoints[key].forEach((item: Function) => {
+				try { item() } catch(err: any) { console.log(err.message) }
 			})
 			if (that.params.testMode) console.log(`[${that.selfName}] Executed breakpoint: ${key}`)
 		}
 	},
-	log(type, breakpoint) {
+	log(type: string, breakpoint: Key) {
 		if (this.params.testMode) {
-			let msgParts = {
+			let msgParts: {[key: string]: string} = {
 				register: 'Registered new actions',
 				delete: 'Deleted actions'
 			}

@@ -1,4 +1,4 @@
-export function objectIsEmpty(obj) {
+export function objectIsEmpty(obj: object) {
 	if (Array.isArray(obj)) return !obj.length
 	for (let prop in obj) {
 		if (Object.hasOwn(obj, prop)) return false
@@ -6,7 +6,7 @@ export function objectIsEmpty(obj) {
 	return true
 }
 
-export function getCssVariable(name) {
+export function getCssVariable(name: string) {
 	const errorMessage = `Could not find CSS variable "${name}"`
 	let value = null
 	if (name) {
@@ -37,6 +37,6 @@ export function getRandomId(length = 10) {
 
 export async function _wait_(seconds = 3) {
 	return new Promise((resolve) => {
-		setTimeout(() => resolve(), seconds * 1000)
+		setTimeout(() => resolve(true), seconds * 1000)
 	})
 }

@@ -1,11 +1,11 @@
 import LiteLayout from '../layouts/LiteLayout';
-import LoginForm from '../../components/parts/Forms/AccountForm/LoginForm';
+// import LoginForm from '../../components/parts/Forms/AccountForm/LoginForm';
 
 function LoginPage() {
 
 	return (
 		<LiteLayout pageTitle='Sign in'>
-			<LoginForm />
+			{/* <LoginForm /> */}
 		</LiteLayout>
 	)
 }

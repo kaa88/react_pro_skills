@@ -1,14 +1,20 @@
-import PageTitle from "../PageTitle"
-import Main from "../../components/parts/Main/Main"
-import LiteHeader from "../../components/parts/Header/LiteHeader/LiteHeader"
+import $ from 'react';
+// import PageTitle from "../PageTitle"
+// import Main from "../../components/parts/Main/Main"
+// import LiteHeader from "../../components/parts/Header/LiteHeader/LiteHeader"
 
-function LiteLayout({children, pageTitle = ''}) {
+interface LayoutProps extends $.ComponentPropsWithoutRef<'div'> {
+	children?: $.ReactNode
+	pageTitle?: string
+}
+
+function LiteLayout({children, pageTitle = ''}: LayoutProps) {
 
 	return (
 		<>
-			<PageTitle value={pageTitle} />
+			{/* <PageTitle value={pageTitle} />
 			<LiteHeader />
-			<Main modif='lite'>{children}</Main>
+			<Main modif='lite'>{children}</Main> */}
 		</>
 	)
 }

@@ -1,7 +1,9 @@
+import type { AxiosError } from "axios"
+
 const UNKNOWN_ERR_MESSAGE = 'Unknown error'
 const ERR_TYPE_AXIOS = 'AxiosError'
 
-export function handleError(error) {
+export function handleError(error: AxiosError<any>) {
 	console.error(error)
 	let errorMessage = error.message
 	if (error.name && error.name === ERR_TYPE_AXIOS) {

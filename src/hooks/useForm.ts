@@ -3,16 +3,32 @@ import { useState } from "react"
 const ERROR_REQUIRED = 'required'
 const ERROR_INCORRECT = 'incorrect'
 
+interface FormParams {
+	action?: Function
+	customValidation?: Function
+	fields?: FieldParamsWithName[]
+}
+interface FieldParams {
+	type?: string
+	defaultValue?: string
+	required?: boolean
+	validate?: boolean
+}
+interface FieldParamsWithName extends FieldParams {
+	name: string
+}
+interface InitialFields {
+	[index: string]: FormField
+}
 
-export function useForm(params = {}) {
-	// params = {action, fields: {name, type, defaultValue, required, validate}, customValidation}
+export function useForm(params: FormParams) {
 	const handleAction = params.action || function(){}
 	const validateFormCustom = params.customValidation || function(){return {ok: true}}
 
-	let initialFields = {}
-	if (params.fields) params.fields.forEach(function(field) {
+	let initialFields: InitialFields = {}
+	if (params.fields) params.fields.forEach((field) => {
 		let {name, ...props} = field
-		if (name) initialFields[name] = new FormField(props, (value) => setFields({...fields, [name]: value}))
+		if (name) initialFields[name] = new FormField(props, (value: string) => setFields({...fields, [name]: value} as InitialFields))
 		else console.error('Form field must have a "name" prop')
 	})
 
@@ -26,7 +42,7 @@ export function useForm(params = {}) {
 		isPending,
 		isError,
 		message,
-		async submit(e) {
+		async submit(e: Event) {
 			e.preventDefault()
 			let {ok: customValidationIsOK, message: customValidationMessage} = validateFormCustom()
 			if (!customValidationIsOK) {
@@ -44,7 +60,7 @@ export function useForm(params = {}) {
 				setIsError(false)
 				setMessage(message || '')
 			}
-			catch(err) {
+			catch(err: any) {
 				setIsError(true)
 				setMessage(err.message)
 				console.error(err);
@@ -53,7 +69,7 @@ export function useForm(params = {}) {
 				setIsPending(false)
 			}
 		},
-		setError(message) {
+		setError(message: string) {
 			setIsError(true)
 			if (message) setMessage(message)
 		},
@@ -69,8 +85,8 @@ export function useForm(params = {}) {
 	}
 }
 
-function validateForm(fields) {
-	let errors = []
+function validateForm(fields: InitialFields) {
+	let errors: string[] = []
 	let message = ''
 
 	Object.values(fields).forEach(field => {
@@ -102,7 +118,7 @@ function validateForm(fields) {
 
 
 // FIELD
-const fieldMessages = {
+const fieldMessages: {[index: string]: {[index: string]: string}} = {
 	email: {
 		required: 'Email is required',
 		incorrect: 'Incorrect email'
@@ -121,70 +137,83 @@ const fieldMessages = {
 	},
 }
 
-const validations = {
-	email(value) {
+const validations: {[index: string]: (value: string) => any} = {
+	email(value: string) {
 		return /^\S+@\S+\.\S+$/.test(value)
 	},
-	password(value) {
+	password(value: string) {
 		if (value.length >= 4) return true
 	},
-	phone(value) {
+	phone(value: string) {
 		if (!value.match(/_/)) return true
 	},
 }
 
 class FormField {
-	constructor(params = {}, setField) {
-		this._updateField = function() {setField(this)}
+	type!: string
+	isRequired!: boolean
+	isValidating!: boolean
+	defaultValue!: string
+	value!: string
+	defaultErrorType!: string
+	errorType!: string
+	_updateField!: Function
+
+	constructor(params: FieldParams, setField: Function) {
 		this.type = params.type || 'text'
 		this.isRequired = params.required || false
 		this.isValidating = params.validate === false ? false : true
 		this.defaultValue = params.defaultValue || ''
 		this.value = this.defaultValue
-		this.isValid = true
 		this.defaultErrorType = this.isRequired ? ERROR_REQUIRED : ''
 		this.errorType = this.defaultErrorType
+		this._updateField = function() {setField(this)}
+	}
+	
+	isValid = true
+	message = ''
+
+	change(e: Event, value: string) {
+		if (e?.target) {
+			let target = e.target as HTMLInputElement
+			value = target.value || ''
+		}
+		this.value = value
+		this.isValid = true
+		this._updateField()
+	}
+
+	validate() {
+		let isValid = false
+		let errorType = ''
+		if (this.value) {
+			if (!this.isValidating || !validations[this.type]) isValid = true
+			else if (validations[this.type](this.value)) isValid = true
+			else errorType = ERROR_INCORRECT
+		}
+		else {
+			if (this.isRequired) errorType = ERROR_REQUIRED
+			else isValid = true
+		}
+		this.isValid = isValid
+		this.errorType = isValid ? '' : errorType
+		this.message = (errorType && fieldMessages[this.type]) ? fieldMessages[this.type][errorType] : ''
+		let isError = !isValid
+		this._updateField()
+		return isError ? errorType : null
+	}
+
+	clear() {
+		this.value = this.defaultValue
+		this.isValid = true
+		this.errorType = this.defaultErrorType
 		this.message = ''
-		this.change = changeField.bind(this)
-		this.validate = validateField.bind(this)
-		this.clear = clearField.bind(this)
-		this.setError = setFieldError.bind(this)
+		this._updateField()
 	}
-}
-function changeField(e, value) {
-	if (e) value = e.target.value || ''
-	this.value = value
-	this.isValid = true
-	this._updateField()
-}
-function validateField() {
-	let isValid = false
-	let errorType = ''
-	if (this.value) {
-		if (!this.isValidating || !validations[this.type]) isValid = true
-		else if (validations[this.type](this.value)) isValid = true
-		else errorType = ERROR_INCORRECT
+
+	setError(message: string) {
+		this.isValid = false
+		if (message) this.message = message
+		this._updateField()
 	}
-	else {
-		if (this.isRequired) errorType = ERROR_REQUIRED
-		else isValid = true
-	}
-	this.isValid = isValid
-	this.errorType = isValid ? '' : errorType
-	this.message = (errorType && fieldMessages[this.type]) ? fieldMessages[this.type][errorType] : ''
-	let isError = !isValid
-	this._updateField()
-	return isError ? errorType : null
-}
-function clearField() {
-	this.value = this.defaultValue
-	this.isValid = true
-	this.errorType = this.defaultErrorType
-	this.message = ''
-	this._updateField()
-}
-function setFieldError(message) {
-	this.isValid = false
-	if (message) this.message = message
-	this._updateField()
 }

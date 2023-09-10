@@ -21,8 +21,7 @@ const FetchService = {
 export default FetchService
 
 
-async function defaultGet(name, endpoint) {
-	if (!name) return;
+async function defaultGet(name: string, endpoint?: string) {
 	if (!endpoint) endpoint = name
 	if (cache[name]) return cache[name]
 	return api.get(`/${endpoint}`)
@@ -36,7 +35,7 @@ async function defaultGet(name, endpoint) {
 		})
 }
 
-const cache = {
+const cache: {[key: string]: any} = {
 	cars: null,
 	carparams: null,
 	caroptions: null,

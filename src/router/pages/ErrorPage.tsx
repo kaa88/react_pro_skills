@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import Container from '../../components/ui/Container/Container';
-import TranslateHandler from '../../components/TranslateHandler';
+// import TranslateHandler from '../../components/TranslateHandler';
 import LiteLayout from '../layouts/LiteLayout';
 
 function ErrorPage() {
@@ -10,7 +10,7 @@ function ErrorPage() {
 			paddingTop: '50px',
 			paddingBottom: '50px',
 			display: 'flex',
-			flexDirection: 'column',
+			// flexDirection: 'column',
 			justifyContent: 'center',
 			alignItems: 'center',
 		},
@@ -30,13 +30,13 @@ function ErrorPage() {
 
 	return (
 		<LiteLayout pageTitle='Page Not Found'>
-			<TranslateHandler>
+			{/* <TranslateHandler> */}
 				<Container style={styles.container}>
 					<p style={styles.title}>404</p>
 					<p style={styles.subtitle}>?_Page Not Found</p>
 					<Link to='/' style={styles.link}>?_Go to Homepage</Link>
 				</Container>
-			</TranslateHandler>
+			{/* </TranslateHandler> */}
 		</LiteLayout>
 	)
 }

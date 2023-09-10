@@ -7,8 +7,8 @@ interface RequireAuthProps {
 }
 
 function RequireNoAuth({children}: RequireAuthProps) {
-	const userID = useSelector(state => state.user.id)
-	if (userID) return <Navigate to='/account' replace={true} />
+	// const userID = useSelector(state => state.user.id)
+	// if (userID) return <Navigate to='/account' replace={true} />
 	return children
 }
 

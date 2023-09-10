@@ -1,4 +1,4 @@
-const stringifyArgs = function(args) {
+const stringifyArgs = function(args: string[]) {
 	return args.map(item => {
 		if (typeof item === 'string') return item.trim()
 		else {
@@ -8,13 +8,13 @@ const stringifyArgs = function(args) {
 	})
 }
 
-const cleanClasses = function(classes) {
+const cleanClasses = function(classes: string[]) {
 	let set = new Set(classes) // filter duplicates
 	set.delete('')
 	return [...set]
 }
 
-const getClasses = function([...args]) {
+const getClasses = function([...args]: IArguments) {
 	if (args.length < 2) return null
 	let [classList, ...classNames] = stringifyArgs(args)
 	let currentClasses = cleanClasses(classList.split(' '))
@@ -24,7 +24,7 @@ const getClasses = function([...args]) {
 }
 
 const classNameChanger = {
-	check(classList, ...classNames) {
+	check(classList: string, ...classNames: string[]) { // fn(classList, ...classNames)
 		let classes = getClasses(arguments)
 		if (!classes) return false
 		let [currentClasses, newClasses] = classes
@@ -32,7 +32,7 @@ const classNameChanger = {
 		return matchedClasses.length === newClasses.length ? true : false
 	},
 
-	add(classList, ...classNames) {
+	add(classList: string, ...classNames: string[]) { // fn(classList, ...classNames)
 		let classes = getClasses(arguments)
 		if (!classes) return classList
 		let [currentClasses, newClasses] = classes
@@ -40,7 +40,7 @@ const classNameChanger = {
 		return newClassList.join(' ')
 	},
 	
-	remove(classList, ...classNames) {
+	remove(classList: string, ...classNames: string[]) { // fn(classList, ...classNames)
 		let classes = getClasses(arguments)
 		if (!classes) return classList
 		let [currentClasses, newClasses] = classes

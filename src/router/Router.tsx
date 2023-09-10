@@ -10,7 +10,7 @@ import HomePage from "./pages/HomePage";
 // import RegisterPage from "./pages/RegisterPage";
 // import RestorePasswordPage from "./pages/RestorePasswordPage";
 // import ReservationPage from "./pages/ReservationPage";
-import { scriptManager } from "../utilities/scriptManager";
+// import { scriptManager } from "../utilities/scriptManager";
 
 
 function Router() {

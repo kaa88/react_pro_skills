@@ -1,4 +1,4 @@
-import { scriptManager } from "./scriptManager"
+// import { scriptManager } from "./scriptManager"
 
 /* 
 	Module prevents window scrolling with menu, modals, etc. and
@@ -7,14 +7,14 @@ import { scriptManager } from "./scriptManager"
 const lockedClassName = 'scroll-is-locked'
 const cssVarName = '--scrollbar-width'
 const calcDelay = 800
-let timeoutID = null
-let prevScrollbarWidth = null
+let timeoutID = null as null | ReturnType<typeof setTimeout>
+let prevScrollbarWidth = null as null | number
 
 export const scrollLock = {
 	init() {
 		this.calcScrollbarWidth()
 		window.addEventListener('resize', this.calcScrollbarWidth.bind(this))
-		scriptManager.registerFunctions('scrollLock', {calcScrollbarWidth: this.calcScrollbarWidth})
+		// scriptManager.registerFunctions('scrollLock', {calcScrollbarWidth: this.calcScrollbarWidth})
 	},
 	calcScrollbarWidth() {
 		if (timeoutID !== null) clearTimeout(timeoutID)
