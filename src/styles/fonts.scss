@@ -1,8 +1,7 @@
-// roboto 400 500, inter 400
+// Montserrat reg semibold bold
 
-@import url('https://fonts.googleapis.com/css2?family=Inter&family=Roboto:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap');
 
 body {
-	--font01: 'Roboto', Arial, sans-serif; // Main
-	--font02: 'Inter', 'Roboto', Arial, sans-serif; // Accent
+	--font01: Montserrat, Verdana, Geneva, sans-serif;
 }

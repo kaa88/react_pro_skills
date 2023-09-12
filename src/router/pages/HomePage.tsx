@@ -10,7 +10,8 @@ import Icon from "../../components/ui/Icon/Icon"
 function HomePage() {
 
 	return (
-		<>
+		<div style={{height: '100%', width: '500px', background: '#eee'}}>
+			<p style={{fontSize: '30px'}}>Montserrat</p>
 			<Button
 				// modif='dark'
 				className="class-name"
@@ -20,7 +21,7 @@ function HomePage() {
 			>Text</Button>
 			<Button><Icon name="icon-email" onClick={()=>console.log('click')} /></Button>
 			{/* <Icon name="s">icon</Icon> */}
-		</>
+		</div>
 		// <DefaultLayout>
 		// 	<Banner />
 		// 	<Cars />

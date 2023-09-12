@@ -28,8 +28,8 @@ body {
 	}
 	font-family: var(--font01);
 	font-size: inherit;
-	color: var(--color02);
-	background-color: var(--color01);
+	color: var(--color-text-default);
+	background-color: var(--color-bg-light);
 	&.scroll-is-locked, &.loadscreen--locked {
 		overflow: hidden;
 		padding-right: var(--scrollbar-width);
