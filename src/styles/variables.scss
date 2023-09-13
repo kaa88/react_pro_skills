@@ -1,8 +1,7 @@
 // SCSS Variables //
-@use "sass:math";
-@import "mixins-funcs";
-@import "breakpoints";
-@import "transitions";
+@forward "mixins-funcs";
+@forward "breakpoints";
+@forward "transitions";
 
 
 // Page sizes //
